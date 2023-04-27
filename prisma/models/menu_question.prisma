@@ -1,0 +1,9 @@
+model MenuQuestion {
+    id Int @id @default(autoincrement())
+    name_kh String? 
+    name_en String? 
+    group_option_id Int
+    group_option GroupOption @relation(fields: [group_option_id],references: [id])
+    menuQuestion SurvayerOption[]
+    
+}

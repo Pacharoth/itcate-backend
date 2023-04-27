@@ -1,0 +1,10 @@
+model SurvayerOption{
+    menuId Int
+    survayerId Int
+    optionId Int
+    
+    menuQuestion MenuQuestion @relation(fields: [menuId],references: [id])
+    survay Survayer @relation(fields: [survayerId],references: [id])
+    option Option @relation(fields: [optionId],references: [id])
+    @@id([menuId,survayerId,optionId])
+}

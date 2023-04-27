@@ -1,0 +1,7 @@
+model GroupOptionWithOption {
+    option_id      Int
+    group_option_id Int
+    option        Option      @relation(fields: [option_id], references: [id])
+    groupOption   GroupOption @relation(fields: [group_option_id], references: [id])
+    @@id([option_id,group_option_id])
+}

@@ -1,0 +1,9 @@
+model Option {
+    id        Int      @id @default(autoincrement())
+    name_kh      String?
+    name_en     String?
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    options GroupOptionWithOption[]
+    survayOption SurvayerOption[]
+}

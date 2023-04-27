@@ -1,0 +1,10 @@
+model Survayer {
+    id          Int      @id @default(autoincrement())
+    name        String
+    phoneNumber String
+    dateVisit   DateTime @default(now())
+    usedToVisit Boolean
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    survayOption SurvayerOption[]
+}

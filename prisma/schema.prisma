@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model GroupOption {
+  id         Int                     @id @default(autoincrement())
+  name       String
+  created_at DateTime                @default(now())
+  updated_at DateTime                @updatedAt
+  options    GroupOptionWithOption[]
+  menuOption MenuQuestion[]
+}
+
+model GroupOptionWithOption {
+  id Int @id @default(autoincrement())
+  option_id       Int
+  group_option_id Int
+  option          Option      @relation(fields: [option_id], references: [id])
+  groupOption     GroupOption @relation(fields: [group_option_id], references: [id])
+}
+
+model Option {
+  id           Int                     @id @default(autoincrement())
+  name_kh      String?
+  name_en      String?
+  created_at   DateTime                @default(now())
+  updated_at   DateTime                @updatedAt
+  options      GroupOptionWithOption[]
+  survayOption SurvayerOption[]
+}
+
+model MenuQuestion {
+  id              Int              @id @default(autoincrement())
+  name_kh         String?
+  name_en         String?
+  group_option_id Int
+  group_option    GroupOption      @relation(fields: [group_option_id], references: [id])
+  menuQuestion    SurvayerOption[]
+
+}
+
+model Survayer {
+  id           Int              @id @default(autoincrement())
+  name         String
+  phoneNumber  String
+  dateVisit    DateTime         @default(now())
+  usedToVisit  Boolean
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  survayOption SurvayerOption[]
+}
+
+//@relations
+model SurvayerOption {
+  id         Int @id @default(autoincrement())
+  menu_id     Int
+  survayer_id Int
+  option_id   Int
+
+  menuQuestion MenuQuestion @relation(fields: [menu_id], references: [id])
+  survay       Survayer     @relation(fields: [survayer_id], references: [id])
+  option       Option       @relation(fields: [option_id], references: [id])
+  @@unique([menu_id, survayer_id, option_id])
+}
