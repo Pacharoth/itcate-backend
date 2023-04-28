@@ -18,36 +18,22 @@ let menu = [["The menu was easy to read", "My order was taken promptly",
     "There was sufficient seating available"], ["Overall, how satisfied were you with your visit?"],
 ["How likely are you to dine with us again?"]]
 async function createOption() {
-    optionArrayString.map(async (value, index) => {
-        const option = await prisma.option.create({
-            data:{
-                name_en:value
-            }
-        })
+    let newData =  optionArrayString.map( (value, index) => {
+        return {name_en:value};
     });
+    const option = await prisma.option.createMany({data:newData,skipDuplicates:true})
 }
 
 async function createBigOption() {
     groupOption.map(async (value: string, index: number) => {
+        
         // console.log(optionBigOption[index].length);
-        let data = await Promise.all(optionBigOption[index].map(async val => {
+        let result =await Promise.all( optionBigOption[index].map(async val => {
             return { option_id: (await prisma.option.findFirst({ where: { name_en: val } })).id }
         }));
-        const bigOption = await prisma.groupOption.upsert({
-            create: {
-                name: value,
-                options: {
-                    create: data
-                }
-            },
-            where: {
-                id: index + 1
-            },
-            update: {
-                name: value,
-            }
-        });
-        console.log(data.length);
+        console.log(result);
+
+       
 
     });
 }
@@ -57,9 +43,7 @@ async function createBigOptionWithOption() {
 async function main() {
     // await createOption();
     // await createBigOption();
-
     await menu.map(async (value, index) => {
-        console.log(value.length);
         await value.map(async (val, i) => {
             let menuQuestion = await prisma.menuQuestion.create({
                 data: {

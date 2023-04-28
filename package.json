@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "migrate":"prisma migrate dev --name init",
     "prebuild": "rimraf dist",
     "build:swc": "npx swc --out-dir dist -w src",
     "start:swc": "nodemon dist/main",
@@ -36,6 +37,7 @@
   "prisma":{
     "seed":"ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
+  
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",

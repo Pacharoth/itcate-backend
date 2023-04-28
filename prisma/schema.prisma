@@ -52,9 +52,10 @@ model Survayer {
   phoneNumber  String
   dateVisit    DateTime         @default(now())
   usedToVisit  Boolean
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
+  created_at    DateTime         @default(now())
+  updated_at    DateTime         @updatedAt
   survayOption SurvayerOption[]
+  survayMessage SurvayerMessage[]
 }
 
 //@relations
@@ -63,9 +64,17 @@ model SurvayerOption {
   menu_id     Int
   survayer_id Int
   option_id   Int
-
   menuQuestion MenuQuestion @relation(fields: [menu_id], references: [id])
   survay       Survayer     @relation(fields: [survayer_id], references: [id])
   option       Option       @relation(fields: [option_id], references: [id])
   @@unique([menu_id, survayer_id, option_id])
+}
+model SurvayerMessage{
+  id  Int @id @default(autoincrement())
+  survay_id Int
+  message String?
+  location Json?  
+  created_at    DateTime         @default(now())
+  updated_at    DateTime         @updatedAt
+  survay Survayer @relation(fields: [survay_id],references: [id])
 }

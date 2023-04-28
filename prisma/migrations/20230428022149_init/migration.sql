@@ -45,8 +45,8 @@ CREATE TABLE "Survayer" (
     "phoneNumber" TEXT NOT NULL,
     "dateVisit" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "usedToVisit" BOOLEAN NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Survayer_pkey" PRIMARY KEY ("id")
 );
@@ -59,6 +59,18 @@ CREATE TABLE "SurvayerOption" (
     "option_id" INTEGER NOT NULL,
 
     CONSTRAINT "SurvayerOption_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SurvayerMessage" (
+    "id" SERIAL NOT NULL,
+    "survay_id" INTEGER NOT NULL,
+    "message" TEXT,
+    "location" JSONB,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "SurvayerMessage_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -81,3 +93,6 @@ ALTER TABLE "SurvayerOption" ADD CONSTRAINT "SurvayerOption_survayer_id_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "SurvayerOption" ADD CONSTRAINT "SurvayerOption_option_id_fkey" FOREIGN KEY ("option_id") REFERENCES "Option"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SurvayerMessage" ADD CONSTRAINT "SurvayerMessage_survay_id_fkey" FOREIGN KEY ("survay_id") REFERENCES "Survayer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
